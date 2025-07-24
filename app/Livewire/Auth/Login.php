@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Enums\Enums\Role;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -26,7 +27,7 @@ class Login extends Component
     /**
      * Handle an incoming authentication request.
      */
-    public function login(): void
+    public function login()
     {
         $this->validate();
 
@@ -42,8 +43,13 @@ class Login extends Component
 
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
-
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        $user = Auth::user();
+        return match($user->role) {
+            Role::ADMIN => redirect()->intended('/admin'),
+            Role::MANAGER => redirect()->intended('/manager'),
+            default => redirect()->intended('dashboard'),
+        };
+//        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }
 
     /**

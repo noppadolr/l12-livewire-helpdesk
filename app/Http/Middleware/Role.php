@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\Response;
-use App\Enums\Enums\Role;
+//use App\Enums\Enums\Role as erole;
 
 class Role
 {
